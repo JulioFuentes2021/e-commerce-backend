@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const index_1 = require("./routers/index");
 const mongoose_1 = __importDefault(require("mongoose"));
+const cors_1 = __importDefault(require("cors"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = 8000;
@@ -17,6 +18,10 @@ err => {
         throw err;
     console.log("Database ready :)");
 });
+const corsOptions = {
+    origin: 'http://localhost:3000'
+};
+app.use((0, cors_1.default)(corsOptions));
 app.get('/', (req, res) => {
     res.send('Express + TypeScript Server de Julio');
 });

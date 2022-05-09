@@ -7,6 +7,7 @@ const productSchema = new mongoose_1.Schema({
     description: { type: String, required: true },
     // email:{ type:String, required:true },
     image: { type: String, required: true },
+    category: { type: String, required: true }
 });
 const newProduct = (0, mongoose_1.model)('products', productSchema);
 exports.default = newProduct;

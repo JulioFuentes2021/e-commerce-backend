@@ -15,16 +15,38 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const product_1 = __importDefault(require("../model/product"));
 const router = express_1.default.Router();
-router.get('/', (req, res) => {
-    res.send('Hello from headphones');
-});
+router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.query.limit);
+    const limit = req.query.limit;
+    if (limit) {
+        if (limit < 1) {
+            return res.status(500).send("Limit can't be less than 1");
+        }
+        else {
+            return res.json({
+                products: yield product_1.default.find().limit(limit)
+            });
+        }
+    }
+    return res.json({
+        products: yield product_1.default.find()
+    });
+}));
+router.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.params.id);
+    const product = yield product_1.default.findById(req.params.id);
+    res.json({
+        products: product
+    });
+}));
 router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const product = new product_1.default({
-            name: 'IE 100 PRO',
-            price: 149.95,
-            description: "Dynamic in-ear monitors for confident monitoring even on the loudest stages. Consistent frequency response in both low and high SPLs. High wearing comfort, even for hours, thanks to an ultra-flat design. With a stage-proof, robust construction. IE 100 PRO Wireless: 2 in 1 combo package: The powerful IE 100 PRO in-ear monitors plus Bluetooth® module for wireless use with your mobile device.",
-            image: 'https://assets.sennheiser.com/img/26703/product_detail_x2_desktop_sennheiser-ie-100-pro-clear-wired.jpg'
+            name: "DANVOUY Womens T Shirt Casual Cotton Short",
+            price: 12.99,
+            description: "95%Cotton,5%Spandex, Features: Casual, Short Sleeve, Letter Print,V-Neck,Fashion Tees, The fabric is soft and has some stretch., Occasion: Casual/Office/Beach/School/Home/Street. Season: Spring,Summer,Autumn,Winter.",
+            category: "women's clothing",
+            image: "https://fakestoreapi.com/img/61pHAEJ4NML._AC_UX679_.jpg"
         });
         yield product.save();
         res.status(200).json({

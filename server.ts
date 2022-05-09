@@ -2,11 +2,13 @@ import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { routerApi } from './routers/index';
 import mongoose from 'mongoose';
+import cors from 'cors';
 
 dotenv.config();
 
 const app: Express = express();
 const port = 8000;
+
 
 mongoose.connect(
 	process.env.DB_CONNECTION as string,
@@ -16,6 +18,13 @@ mongoose.connect(
 		console.log("Database ready :)");
 	}
 );
+
+const corsOptions = {
+	origin: 'http://localhost:3000'
+}
+
+app.use(cors(corsOptions))
+
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server de Julio');

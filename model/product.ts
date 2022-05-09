@@ -7,6 +7,7 @@ interface Product {
     description:string
     // email:string
     image:string
+    category: string
 }
 
 const productSchema = new Schema<Product>({
@@ -15,6 +16,7 @@ const productSchema = new Schema<Product>({
     description:{ type:String, required:true },
     // email:{ type:String, required:true },
     image:{ type:String, required:true },
+    category: { type:String, required:true }
 })
 
 const newProduct = model<Product>('products', productSchema)
