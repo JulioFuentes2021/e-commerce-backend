@@ -14,9 +14,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const product_1 = __importDefault(require("../model/product"));
+const checkCategory_1 = require("../middlewares/checkCategory");
 const router = express_1.default.Router();
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.query.limit);
     const limit = req.query.limit;
     if (limit) {
         if (limit < 1) {
@@ -37,6 +37,12 @@ router.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const product = yield product_1.default.findById(req.params.id);
     res.json({
         products: product
+    });
+}));
+router.get('/category/:category', checkCategory_1.checkCategory, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const products = yield product_1.default.find({ category: req.params.category });
+    res.json({
+        products
     });
 }));
 router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {

@@ -1,12 +1,13 @@
 import express, { Request, Response } from 'express';
 import Product from '../model/product';
 import { AllProducts } from '../view/products';
+import { checkCategory } from "../middlewares/checkCategory";
 
 const router = express.Router();
 
 router.get('/', async (req:Request, res:Response) => {
-    console.log(req.query.limit)
     const limit = req.query.limit as unknown
+
     if(limit) {
         if(limit as number < 1) {
         return res.status(500).send("Limit can't be less than 1")
@@ -16,7 +17,6 @@ router.get('/', async (req:Request, res:Response) => {
             })
         }
     }
-
     return res.json({
         products: await Product.find()
     })
@@ -29,6 +29,14 @@ router.get('/:id', async (req:Request, res:Response) => {
 
     res.json({
         products: product
+    })
+})
+
+router.get('/category/:category', checkCategory ,async (req, res) => {
+    const products = await Product.find({ category:req.params.category })
+
+    res.json({
+        products
     })
 })
 

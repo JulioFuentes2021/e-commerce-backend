@@ -8,6 +8,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const index_1 = require("./routers/index");
 const mongoose_1 = __importDefault(require("mongoose"));
 const cors_1 = __importDefault(require("cors"));
+const errorHandle_1 = require("./middlewares/errorHandle");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = 8000;
@@ -26,6 +27,7 @@ app.get('/', (req, res) => {
     res.send('Express + TypeScript Server de Julio');
 });
 (0, index_1.routerApi)(app);
+app.use(errorHandle_1.error);
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
 });

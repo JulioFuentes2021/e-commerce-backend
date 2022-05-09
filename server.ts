@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { routerApi } from './routers/index';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import { error } from './middlewares/errorHandle';
 
 dotenv.config();
 
@@ -31,7 +32,11 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 
+
 routerApi(app);
+
+app.use(error)
+
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
