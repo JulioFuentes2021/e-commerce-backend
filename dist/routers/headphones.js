@@ -40,19 +40,25 @@ router.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     });
 }));
 router.get('/category/:category', checkCategory_1.checkCategory, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const products = yield product_1.default.find({ category: req.params.category });
-    res.json({
-        products
+    const limit = req.query.limit;
+    if (limit) {
+        if (limit < 1) {
+            return res.status(500).send("Limit can't be less than 1");
+        }
+        else {
+            return res.json({
+                products: yield product_1.default.find({ category: req.params.category }).limit(limit)
+            });
+        }
+    }
+    return res.json({
+        products: yield product_1.default.find({ category: req.params.category })
     });
 }));
 router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const product = new product_1.default({
             name: "DANVOUY Womens T Shirt Casual Cotton Short",
-            price: 12.99,
-            description: "95%Cotton,5%Spandex, Features: Casual, Short Sleeve, Letter Print,V-Neck,Fashion Tees, The fabric is soft and has some stretch., Occasion: Casual/Office/Beach/School/Home/Street. Season: Spring,Summer,Autumn,Winter.",
-            category: "women's clothing",
-            image: "https://fakestoreapi.com/img/61pHAEJ4NML._AC_UX679_.jpg"
         });
         yield product.save();
         res.status(200).json({
