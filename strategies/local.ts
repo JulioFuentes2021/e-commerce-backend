@@ -1,4 +1,4 @@
-import localStrategy from 'passport-local';
+import { Strategy as localStrategy } from 'passport-local';
 import passport from "passport";
 import bcrypt from 'bcrypt';
 import { getUser } from '../view/user';

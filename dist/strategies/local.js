@@ -13,11 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.localStrategyF = void 0;
-const passport_local_1 = __importDefault(require("passport-local"));
+const passport_local_1 = require("passport-local");
 const passport_1 = __importDefault(require("passport"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_1 = require("../view/user");
-exports.localStrategyF = passport_1.default.use(new passport_local_1.default((username, password, done) => __awaiter(void 0, void 0, void 0, function* () {
+exports.localStrategyF = passport_1.default.use(new passport_local_1.Strategy((username, password, done) => __awaiter(void 0, void 0, void 0, function* () {
     // const user = await getUser(username)
     // console.log(username)
     // console.log(user)
