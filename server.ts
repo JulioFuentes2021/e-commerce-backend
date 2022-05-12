@@ -2,7 +2,9 @@ import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { routerApi } from './routers/index';
 import mongoose from 'mongoose';
+import session from 'express-session';
 import cors from 'cors';
+import passport from 'passport';
 import { error } from './middlewares/errorHandle';
 
 dotenv.config();
@@ -10,6 +12,24 @@ dotenv.config();
 const app: Express = express();
 const port = 8000;
 
+app.use(express.json());
+require('./strategies/local');
+// app.use(passport.initialize());
+// app.use(passport.session());
+
+
+// app.use(
+// 	session({
+// 		// key: "isAuthenticated2022f",
+// 		secret: "laksjf30jf3lkajf3",
+// 		resave: false,
+// 		saveUninitialized: true,
+// 		// store: sessionStore,
+// 		cookie: {
+// 			maxAge: 1000 * 60 * 24, //*1 day
+// 		},
+// 	})
+// );
 
 mongoose.connect(
 	process.env.DB_CONNECTION as string,
@@ -35,7 +55,7 @@ app.get('/', (req: Request, res: Response) => {
 
 routerApi(app);
 
-app.use(error)
+// app.use(error)
 
 
 app.listen(port, () => {
