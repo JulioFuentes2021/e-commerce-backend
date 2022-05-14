@@ -17,13 +17,13 @@ const passport_local_1 = require("passport-local");
 const passport_1 = __importDefault(require("passport"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_1 = require("../view/user");
-exports.localStrategyF = passport_1.default.use(new passport_local_1.Strategy((username, password, done) => __awaiter(void 0, void 0, void 0, function* () {
+exports.localStrategyF = passport_1.default.use(new passport_local_1.Strategy((gmail, password, done) => __awaiter(void 0, void 0, void 0, function* () {
     // const user = await getUser(username)
-    // console.log(username)
+    console.log('Usernaem local: ', gmail);
     // console.log(user)
     // return done(null, user)
     try {
-        const user = yield (0, user_1.getUser)(username);
+        const user = yield (0, user_1.getUser)(gmail);
         console.log('Local strategy');
         console.log('Valores: ', user);
         if (!user) {

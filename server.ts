@@ -4,6 +4,7 @@ import { routerApi } from './routers/index';
 import mongoose from 'mongoose';
 import session from 'express-session';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import { error } from './middlewares/errorHandle';
 
@@ -13,7 +14,9 @@ const app: Express = express();
 const port = 8000;
 
 app.use(express.json());
+app.use(cookieParser());
 require('./strategies/local');
+require('./strategies/jwt');
 // app.use(passport.initialize());
 // app.use(passport.session());
 
@@ -30,6 +33,12 @@ require('./strategies/local');
 // 		},
 // 	})
 // );
+
+app.use(cors({
+	credentials: true,
+	allowedHeaders: ['Content-Type', 'Authorization'],
+	origin: ['http://localhost:3000']
+}));
 
 mongoose.connect(
 	process.env.DB_CONNECTION as string,
@@ -55,7 +64,7 @@ app.get('/', (req: Request, res: Response) => {
 
 routerApi(app);
 
-// app.use(error)
+app.use(error)
 
 
 app.listen(port, () => {

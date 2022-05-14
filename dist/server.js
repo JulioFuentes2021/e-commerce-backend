@@ -8,11 +8,15 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const index_1 = require("./routers/index");
 const mongoose_1 = __importDefault(require("mongoose"));
 const cors_1 = __importDefault(require("cors"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const errorHandle_1 = require("./middlewares/errorHandle");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = 8000;
 app.use(express_1.default.json());
+app.use((0, cookie_parser_1.default)());
 require('./strategies/local');
+require('./strategies/jwt');
 // app.use(passport.initialize());
 // app.use(passport.session());
 // app.use(
@@ -27,6 +31,11 @@ require('./strategies/local');
 // 		},
 // 	})
 // );
+app.use((0, cors_1.default)({
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    origin: ['http://localhost:3000']
+}));
 mongoose_1.default.connect(process.env.DB_CONNECTION, 
 // { useNewUrlParser: true, useUnifiedTopology: true },
 err => {
@@ -42,7 +51,7 @@ app.get('/', (req, res) => {
     res.send('Express + TypeScript Server de Julio');
 });
 (0, index_1.routerApi)(app);
-// app.use(error)
+app.use(errorHandle_1.error);
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
 });

@@ -2,17 +2,18 @@ import { Strategy as localStrategy } from 'passport-local';
 import passport from "passport";
 import bcrypt from 'bcrypt';
 import { getUser } from '../view/user';
+import { IUser } from '../types';
 
 export const localStrategyF = passport.use(new localStrategy(
-	async (username, password, done) => {
+	async (gmail, password, done) => {
 		// const user = await getUser(username)
-		// console.log(username)
+		console.log('Usernaem local: ',gmail)
 		// console.log(user)
 		// return done(null, user)
 		try {
-			const user = await getUser(username)
-		console.log('Local strategy')
-        console.log('Valores: ', user)
+			const user:IUser | null = await getUser(gmail)
+			console.log('Local strategy')
+        	console.log('Valores: ', user)
 
 			if (!user) {
 				return done(null, false)

@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUser = void 0;
 const user_1 = __importDefault(require("../model/user"));
 const getUser = (username) => __awaiter(void 0, void 0, void 0, function* () {
-    const userFound = yield user_1.default.findOne({ username: username });
+    const userFound = yield user_1.default.findOne({ gmail: username });
     return userFound;
 });
 exports.getUser = getUser;
