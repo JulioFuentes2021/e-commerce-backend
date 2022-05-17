@@ -1,9 +1,19 @@
 export type Category = 'electronics' | 'jewelery' | "men's clothing" | "women's clothing"
 
-export interface IUser extends User {
+
+export type Cart = {
+    name: string
+    image: string
+    price: number
+    amount:number
+}
+
+export interface IUser {
     username: string
     gmail:string
     password:string
+    shoppingCart: [Cart]
+    save:() => void
 }
 
 // declare global {
