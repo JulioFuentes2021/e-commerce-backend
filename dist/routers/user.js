@@ -59,7 +59,7 @@ router.get("/test", passport_1.default.authenticate("jwt", { session: false }), 
         success: "JWT funcionando",
     });
 });
-router.post("/add", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/add", passport_1.default.authenticate("jwt", { session: false }), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, image, amount, price, gmail } = req.body;
     try {
         console.log(gmail);

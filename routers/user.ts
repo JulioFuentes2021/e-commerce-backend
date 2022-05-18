@@ -60,7 +60,7 @@ router.get(
 	}
 );
 
-router.post("/add", async (req, res) => {
+router.post("/add", passport.authenticate("jwt", { session: false}), async (req, res) => {
 	const { name, image, amount, price, gmail } = req.body;
 
 	try {
