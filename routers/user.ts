@@ -61,45 +61,40 @@ router.get(
 );
 
 router.post("/add", passport.authenticate("jwt", { session: false}), async (req, res) => {
-	const { name, image, amount, price, gmail } = req.body;
+	const { name, image, amount, price } = req.body;
 
 	try {
-		console.log(gmail);
-		const addToCart = await getUser(gmail);
-		console.log(addToCart);
+		console.log('jwt req: ',req?.user?.gmail);
 
-		const productIndex = addToCart?.shoppingCart.findIndex(
+		const productIndex = req.user?.shoppingCart.findIndex(
 			product =>
 				product.name ===
 				name
 		);
 
 		if (productIndex === -1) {
-			addToCart?.shoppingCart.push({
+			req.user?.shoppingCart.push({
 				name,
 				image,
 				amount,
 				price,
 			});
 
-			await addToCart?.save();
+			await req.user?.save();
 		} else {
 			const options = { upsert:true, setDefaultsOnInsert: true, new:true }
 
-			if(addToCart){
-				console.log('Accediendo al amount: ', addToCart.shoppingCart[productIndex as number].amount)
-			await User.updateOne({ "gmail":gmail, "shoppingCart.name":name }, { $set: { "shoppingCart.$.amount":amount + addToCart.shoppingCart[productIndex as number].amount } })
+			if(req.user){
+				console.log('Accediendo al amount: ', req.user.shoppingCart[productIndex as number].amount)
+			await User.updateOne({ "gmail":req.user.gmail, "shoppingCart.name":name }, { $set: { "shoppingCart.$.amount":amount + req.user.shoppingCart[productIndex as number].amount } })
 				
 			}
         }
-
-		console.log(productIndex);
 
 		res.json({
 			success: "The product was added successfully",
 		});
 	} catch (error) {
-		console.log("Error desde /add: ", error);
 		res.status(404).json({
 			message: "Slio mal",
 			error

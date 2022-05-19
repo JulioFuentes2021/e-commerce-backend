@@ -20,7 +20,6 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const jwt = require("jsonwebtoken");
 // import { localStrategyF } from '../strategies/local';
 const passport_1 = __importDefault(require("passport"));
-const user_2 = require("../view/user");
 const router = express_1.default.Router();
 router.post("/sign-up", (0, validators_1.default)(user_shcema_1.createUser, "body"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -60,36 +59,33 @@ router.get("/test", passport_1.default.authenticate("jwt", { session: false }), 
     });
 });
 router.post("/add", passport_1.default.authenticate("jwt", { session: false }), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, image, amount, price, gmail } = req.body;
+    var _b, _c, _d, _e;
+    const { name, image, amount, price } = req.body;
     try {
-        console.log(gmail);
-        const addToCart = yield (0, user_2.getUser)(gmail);
-        console.log(addToCart);
-        const productIndex = addToCart === null || addToCart === void 0 ? void 0 : addToCart.shoppingCart.findIndex(product => product.name ===
+        console.log('jwt req: ', (_b = req === null || req === void 0 ? void 0 : req.user) === null || _b === void 0 ? void 0 : _b.gmail);
+        const productIndex = (_c = req.user) === null || _c === void 0 ? void 0 : _c.shoppingCart.findIndex(product => product.name ===
             name);
         if (productIndex === -1) {
-            addToCart === null || addToCart === void 0 ? void 0 : addToCart.shoppingCart.push({
+            (_d = req.user) === null || _d === void 0 ? void 0 : _d.shoppingCart.push({
                 name,
                 image,
                 amount,
                 price,
             });
-            yield (addToCart === null || addToCart === void 0 ? void 0 : addToCart.save());
+            yield ((_e = req.user) === null || _e === void 0 ? void 0 : _e.save());
         }
         else {
             const options = { upsert: true, setDefaultsOnInsert: true, new: true };
-            if (addToCart) {
-                console.log('Accediendo al amount: ', addToCart.shoppingCart[productIndex].amount);
-                yield user_1.default.updateOne({ "gmail": gmail, "shoppingCart.name": name }, { $set: { "shoppingCart.$.amount": amount + addToCart.shoppingCart[productIndex].amount } });
+            if (req.user) {
+                console.log('Accediendo al amount: ', req.user.shoppingCart[productIndex].amount);
+                yield user_1.default.updateOne({ "gmail": req.user.gmail, "shoppingCart.name": name }, { $set: { "shoppingCart.$.amount": amount + req.user.shoppingCart[productIndex].amount } });
             }
         }
-        console.log(productIndex);
         res.json({
             success: "The product was added successfully",
         });
     }
     catch (error) {
-        console.log("Error desde /add: ", error);
         res.status(404).json({
             message: "Slio mal",
             error

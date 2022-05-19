@@ -16,8 +16,8 @@ export interface IUser {
     save:() => void
 }
 
-// declare global {
-//     namespace Express {
-//       interface User extends IUser{}
-//     }
-//   }
+declare global {
+    namespace Express {
+      interface User extends IUser{}
+    }
+  }

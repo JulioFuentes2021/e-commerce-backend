@@ -20,7 +20,7 @@ exports.jwtStrategy = passport_1.default.use(new passport_jwt_1.Strategy(options
         }
         if (user) {
             console.log(user);
-            return done(null, jwt_payload);
+            return done(null, user[0]);
         }
         else {
             return done(null, false);

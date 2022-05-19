@@ -16,7 +16,7 @@ export const jwtStrategy = passport.use(new Strategy(options, function(jwt_paylo
         }
         if (user) {
             console.log(user)
-            return done(null, jwt_payload);
+            return done(null, user[0]);
         } else {
             return done(null, false);
             // or you could create a new account
