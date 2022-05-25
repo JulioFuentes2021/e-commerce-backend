@@ -23,6 +23,7 @@ exports.jwtStrategy = passport_1.default.use(new passport_jwt_1.Strategy(options
             return done(null, user[0]);
         }
         else {
+            console.log('NULLL');
             return done(null, false);
             // or you could create a new account
         }

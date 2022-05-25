@@ -14,8 +14,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const product_1 = __importDefault(require("../model/product"));
+const user_1 = __importDefault(require("../model/user"));
 const checkCategory_1 = require("../middlewares/checkCategory");
+const passport_1 = __importDefault(require("passport"));
 const router = express_1.default.Router();
+router.get('/shopping', passport_1.default.authenticate('jwt', { session: false }), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const shoppingCart = yield user_1.default.findOne({ gmail: (_a = req === null || req === void 0 ? void 0 : req.user) === null || _a === void 0 ? void 0 : _a.gmail });
+    console.log('This is the shopping cart: ', shoppingCart === null || shoppingCart === void 0 ? void 0 : shoppingCart.shoppingCart);
+    res.json({
+        success: "The shopping cart was gotten successfully",
+        response: shoppingCart === null || shoppingCart === void 0 ? void 0 : shoppingCart.shoppingCart
+    });
+}));
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const limit = req.query.limit;
     if (limit) {

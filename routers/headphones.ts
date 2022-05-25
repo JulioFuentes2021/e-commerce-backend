@@ -1,9 +1,21 @@
 import express, { Request, Response } from 'express';
 import Product from '../model/product';
+import User from '../model/user';
 import { AllProducts } from '../view/products';
 import { checkCategory } from "../middlewares/checkCategory";
+import passport from "passport";
 
 const router = express.Router();
+
+router.get('/shopping', passport.authenticate('jwt', { session:false }), async (req:Request, res:Response) => {
+    const shoppingCart = await User.findOne({ gmail: req?.user?.gmail });
+    console.log('This is the shopping cart: ',shoppingCart?.shoppingCart)
+
+    res.json({
+        success: "The shopping cart was gotten successfully",
+        response:shoppingCart?.shoppingCart
+    });
+})
 
 router.get('/', async (req:Request, res:Response) => {
     const limit = req.query.limit as unknown
@@ -70,5 +82,6 @@ router.post('/', async (req:Request, res:Response) => {
         })
     }
 })
+
 
 export default router;
