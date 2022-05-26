@@ -5,7 +5,7 @@ export type Cart = {
     name: string
     image: string
     price: number
-    amount:number
+    amount:number,
 }
 
 export interface IUser {
@@ -13,6 +13,10 @@ export interface IUser {
     gmail:string
     password:string
     shoppingCart: [Cart]
+    total:number
+    shipping: number
+    vat:numer
+    grandTotal:number
     save:() => void
 }
 

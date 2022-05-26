@@ -78,7 +78,11 @@ router.post("/add", passport.authenticate("jwt", { session: false}), async (req,
 				image,
 				amount,
 				price,
-			});
+			}); 
+
+			if(req.user) {
+				await User.updateOne({ "gmail":req.user?.gmail }, { "total":req.user?.total + (amount*price), "shipping":(req.user?.total + (amount*price)) * 0.06, "vat":(req.user?.total + (amount*price)) * 0.04, "grandTotal": req?.user?.total + (amount*price) + (req?.user?.total + (amount*price)) * 0.06 + (req?.user?.total + (amount*price)) * 0.04 })
+			}
 
 			await req.user?.save();
 		} else {
@@ -86,8 +90,7 @@ router.post("/add", passport.authenticate("jwt", { session: false}), async (req,
 
 			if(req.user){
 				console.log('Accediendo al amount: ', req.user.shoppingCart[productIndex as number].amount)
-			await User.updateOne({ "gmail":req.user.gmail, "shoppingCart.name":name }, { $set: { "shoppingCart.$.amount":amount + req.user.shoppingCart[productIndex as number].amount } })
-				
+			await User.updateOne({ "gmail":req.user.gmail, "shoppingCart.name":name }, { $set: { "shoppingCart.$.amount":amount + req.user.shoppingCart[productIndex as number].amount, "total":req?.user?.total + (amount*price), "shipping":(req?.user?.total + (amount*price)) * 0.06, "vat":(req?.user?.total + (amount*price)) * 0.04, "grandTotal": req?.user?.total + (amount*price) + (req?.user?.total + (amount*price)) * 0.06 + (req?.user?.total + (amount*price)) * 0.04 } })
 			}
         }
 

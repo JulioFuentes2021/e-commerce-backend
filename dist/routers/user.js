@@ -59,7 +59,7 @@ router.get("/test", passport_1.default.authenticate("jwt", { session: false }), 
     });
 });
 router.post("/add", passport_1.default.authenticate("jwt", { session: false }), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _b, _c, _d, _e;
+    var _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t;
     const { name, image, amount, price } = req.body;
     try {
         console.log('jwt req: ', (_b = req === null || req === void 0 ? void 0 : req.user) === null || _b === void 0 ? void 0 : _b.gmail);
@@ -72,13 +72,16 @@ router.post("/add", passport_1.default.authenticate("jwt", { session: false }), 
                 amount,
                 price,
             });
-            yield ((_e = req.user) === null || _e === void 0 ? void 0 : _e.save());
+            if (req.user) {
+                yield user_1.default.updateOne({ "gmail": (_e = req.user) === null || _e === void 0 ? void 0 : _e.gmail }, { "total": ((_f = req.user) === null || _f === void 0 ? void 0 : _f.total) + (amount * price), "shipping": (((_g = req.user) === null || _g === void 0 ? void 0 : _g.total) + (amount * price)) * 0.06, "vat": (((_h = req.user) === null || _h === void 0 ? void 0 : _h.total) + (amount * price)) * 0.04, "grandTotal": ((_j = req === null || req === void 0 ? void 0 : req.user) === null || _j === void 0 ? void 0 : _j.total) + (amount * price) + (((_k = req === null || req === void 0 ? void 0 : req.user) === null || _k === void 0 ? void 0 : _k.total) + (amount * price)) * 0.06 + (((_l = req === null || req === void 0 ? void 0 : req.user) === null || _l === void 0 ? void 0 : _l.total) + (amount * price)) * 0.04 });
+            }
+            yield ((_m = req.user) === null || _m === void 0 ? void 0 : _m.save());
         }
         else {
             const options = { upsert: true, setDefaultsOnInsert: true, new: true };
             if (req.user) {
                 console.log('Accediendo al amount: ', req.user.shoppingCart[productIndex].amount);
-                yield user_1.default.updateOne({ "gmail": req.user.gmail, "shoppingCart.name": name }, { $set: { "shoppingCart.$.amount": amount + req.user.shoppingCart[productIndex].amount } });
+                yield user_1.default.updateOne({ "gmail": req.user.gmail, "shoppingCart.name": name }, { $set: { "shoppingCart.$.amount": amount + req.user.shoppingCart[productIndex].amount, "total": ((_o = req === null || req === void 0 ? void 0 : req.user) === null || _o === void 0 ? void 0 : _o.total) + (amount * price), "shipping": (((_p = req === null || req === void 0 ? void 0 : req.user) === null || _p === void 0 ? void 0 : _p.total) + (amount * price)) * 0.06, "vat": (((_q = req === null || req === void 0 ? void 0 : req.user) === null || _q === void 0 ? void 0 : _q.total) + (amount * price)) * 0.04, "grandTotal": ((_r = req === null || req === void 0 ? void 0 : req.user) === null || _r === void 0 ? void 0 : _r.total) + (amount * price) + (((_s = req === null || req === void 0 ? void 0 : req.user) === null || _s === void 0 ? void 0 : _s.total) + (amount * price)) * 0.06 + (((_t = req === null || req === void 0 ? void 0 : req.user) === null || _t === void 0 ? void 0 : _t.total) + (amount * price)) * 0.04 } });
             }
         }
         res.json({

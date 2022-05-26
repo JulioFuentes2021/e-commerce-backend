@@ -18,6 +18,10 @@ const productSchema = new mongoose_1.Schema({
     gmail: { type: String, required: true },
     password: { type: String, required: true },
     shoppingCart: { type: [], required: false },
+    total: { type: Number, required: false, default: 0 },
+    shipping: { type: Number, required: false, default: 0 },
+    vat: { type: Number, required: false, default: 0 },
+    grandTotal: { type: Number, required: false, default: 0 },
 });
 const newUser = (0, mongoose_1.model)('users', productSchema);
 exports.default = newUser;
