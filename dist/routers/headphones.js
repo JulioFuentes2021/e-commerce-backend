@@ -24,7 +24,13 @@ router.get('/shopping', passport_1.default.authenticate('jwt', { session: false 
     console.log('This is the shopping cart: ', shoppingCart === null || shoppingCart === void 0 ? void 0 : shoppingCart.shoppingCart);
     res.json({
         success: "The shopping cart was gotten successfully",
-        response: shoppingCart === null || shoppingCart === void 0 ? void 0 : shoppingCart.shoppingCart
+        response: {
+            shoppingCart: shoppingCart === null || shoppingCart === void 0 ? void 0 : shoppingCart.shoppingCart,
+            total: shoppingCart === null || shoppingCart === void 0 ? void 0 : shoppingCart.total,
+            shipping: shoppingCart === null || shoppingCart === void 0 ? void 0 : shoppingCart.shipping,
+            vat: shoppingCart === null || shoppingCart === void 0 ? void 0 : shoppingCart.vat,
+            grandTotal: shoppingCart === null || shoppingCart === void 0 ? void 0 : shoppingCart.grandTotal
+        }
     });
 }));
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {

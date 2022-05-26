@@ -13,7 +13,13 @@ router.get('/shopping', passport.authenticate('jwt', { session:false }), async (
 
     res.json({
         success: "The shopping cart was gotten successfully",
-        response:shoppingCart?.shoppingCart
+        response:{
+            shoppingCart:shoppingCart?.shoppingCart,
+            total: shoppingCart?.total,
+            shipping: shoppingCart?.shipping,
+            vat: shoppingCart?.vat,
+            grandTotal: shoppingCart?.grandTotal
+        }
     });
 })
 
