@@ -8,18 +8,19 @@ import passport from "passport";
 const router = express.Router();
 
 router.get('/shopping', passport.authenticate('jwt', { session:false }), async (req:Request, res:Response) => {
-    const shoppingCart = await User.findOne({ gmail: req?.user?.gmail });
-    console.log('This is the shopping cart: ',shoppingCart?.shoppingCart)
+    // const shoppingCart = await User.findOne({ gmail: req?.user?.gmail });
+    console.log('This is the shopping cart: ', req.user?.shoppingCart)
 
     res.json({
         success: "The shopping cart was gotten successfully",
         response:{
-            shoppingCart:shoppingCart?.shoppingCart,
-            total: shoppingCart?.total,
-            shipping: shoppingCart?.shipping,
-            vat: shoppingCart?.vat,
-            grandTotal: shoppingCart?.grandTotal
-        }
+            shoppingCart:req.user?.shoppingCart,
+            total: req.user?.total,
+            shipping: req.user?.shipping,
+            vat: req.user?.vat,
+            grandTotal: req.user?.grandTotal
+        },
+        cartLength: req.user?.shoppingCart.length
     });
 })
 

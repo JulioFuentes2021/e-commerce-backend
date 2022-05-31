@@ -8,8 +8,9 @@ const options = {
 }
 
 export const jwtStrategy = passport.use(new Strategy(options, function(jwt_payload, done) {
-    console.log('Aquii')
-    User.find({gmail: jwt_payload.sub}, function(err, user) {
+    console.log('Aquiiiiiiiiiiiiii')
+    
+    User.find({gmail: jwt_payload.gmail}, function(err, user) {
         if (err) {
             console.log(err)
             return done(err, false);

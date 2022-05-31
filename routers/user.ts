@@ -6,8 +6,7 @@ import bcrypt from "bcrypt";
 const jwt = require("jsonwebtoken");
 // import { localStrategyF } from '../strategies/local';
 import passport from "passport";
-import { IUser } from "../types";
-import { getUser } from "../view/user";
+import { generateToken, generateRefreshToken } from "../utils/jwtUtils";
 
 const router = express.Router();
 
@@ -40,15 +39,39 @@ router.post(
 		const payload = {
 			sub: req.user?.gmail,
 		};
-		const token = jwt.sign(payload, "julio");
-		res.cookie("token", token);
 
-		res.json({
-			message: "Sign Up was an exit",
-			user: req.user,
-		});
+		const gmail = req.user?.gmail as string
+        const { token, expiresIn } = generateToken(gmail);
+        generateRefreshToken(gmail, res);
+
+		return res.json({ token, expiresIn });
+
+		// const token = jwt.sign(payload, "julio");
+		// res.cookie("token", token);
+
+		// res.json({
+		// 	message: "Sign Up was an exit",
+		// 	user: req.user,
+		// });
 	}
 );
+
+router.get('/refresh', (req, res) => {
+	try {
+        let refreshTokenCookie = req.cookies?.refreshToken;
+        if (!refreshTokenCookie) throw new Error("No existe el refreshToken");
+
+        const { gmail } = jwt.verify(refreshTokenCookie, 'cesar');
+
+        const { token, expiresIn } = generateToken(gmail);
+
+        return res.json({ token, expiresIn });
+    } catch (error) {
+        console.log(error);
+        const data = 'Token incorrect'
+        return res.status(401).json({ error: data });
+    }
+})
 
 router.get(
 	"/test",

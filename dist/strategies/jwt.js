@@ -12,8 +12,8 @@ const options = {
     secretOrKey: 'julio'
 };
 exports.jwtStrategy = passport_1.default.use(new passport_jwt_1.Strategy(options, function (jwt_payload, done) {
-    console.log('Aquii');
-    user_1.default.find({ gmail: jwt_payload.sub }, function (err, user) {
+    console.log('Aquiiiiiiiiiiiiii');
+    user_1.default.find({ gmail: jwt_payload.gmail }, function (err, user) {
         if (err) {
             console.log(err);
             return done(err, false);

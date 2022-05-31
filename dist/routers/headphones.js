@@ -14,23 +14,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const product_1 = __importDefault(require("../model/product"));
-const user_1 = __importDefault(require("../model/user"));
 const checkCategory_1 = require("../middlewares/checkCategory");
 const passport_1 = __importDefault(require("passport"));
 const router = express_1.default.Router();
 router.get('/shopping', passport_1.default.authenticate('jwt', { session: false }), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    const shoppingCart = yield user_1.default.findOne({ gmail: (_a = req === null || req === void 0 ? void 0 : req.user) === null || _a === void 0 ? void 0 : _a.gmail });
-    console.log('This is the shopping cart: ', shoppingCart === null || shoppingCart === void 0 ? void 0 : shoppingCart.shoppingCart);
+    var _a, _b, _c, _d, _e, _f, _g;
+    // const shoppingCart = await User.findOne({ gmail: req?.user?.gmail });
+    console.log('This is the shopping cart: ', (_a = req.user) === null || _a === void 0 ? void 0 : _a.shoppingCart);
     res.json({
         success: "The shopping cart was gotten successfully",
         response: {
-            shoppingCart: shoppingCart === null || shoppingCart === void 0 ? void 0 : shoppingCart.shoppingCart,
-            total: shoppingCart === null || shoppingCart === void 0 ? void 0 : shoppingCart.total,
-            shipping: shoppingCart === null || shoppingCart === void 0 ? void 0 : shoppingCart.shipping,
-            vat: shoppingCart === null || shoppingCart === void 0 ? void 0 : shoppingCart.vat,
-            grandTotal: shoppingCart === null || shoppingCart === void 0 ? void 0 : shoppingCart.grandTotal
-        }
+            shoppingCart: (_b = req.user) === null || _b === void 0 ? void 0 : _b.shoppingCart,
+            total: (_c = req.user) === null || _c === void 0 ? void 0 : _c.total,
+            shipping: (_d = req.user) === null || _d === void 0 ? void 0 : _d.shipping,
+            vat: (_e = req.user) === null || _e === void 0 ? void 0 : _e.vat,
+            grandTotal: (_f = req.user) === null || _f === void 0 ? void 0 : _f.grandTotal
+        },
+        cartLength: (_g = req.user) === null || _g === void 0 ? void 0 : _g.shoppingCart.length
     });
 }));
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
